@@ -1,4 +1,4 @@
-System.register(['angular2/core', './weather.service'], function(exports_1, context_1) {
+System.register(['angular2/core', "angular2/common", './weather.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,12 +10,15 @@ System.register(['angular2/core', './weather.service'], function(exports_1, cont
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, weather_service_1;
+    var core_1, common_1, weather_service_1;
     var AppComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (common_1_1) {
+                common_1 = common_1_1;
             },
             function (weather_service_1_1) {
                 weather_service_1 = weather_service_1_1;
@@ -35,8 +38,21 @@ System.register(['angular2/core', './weather.service'], function(exports_1, cont
                         .subscribe(function (cities) { _this.cities = cities; }, function (error) { return console.log(error); });
                     this.initMap();
                 };
-                AppComponent.prototype.initMap = function () {
-                    var myLatLng = { lat: -25.363, lng: 131.044 };
+                AppComponent.prototype.onSelect = function (selectedCity) {
+                    //search for city
+                    for (var i = 0; i < this.cities.length; i++) {
+                        if (this.cities[i].City === selectedCity) {
+                            this.selectedCity = this.cities[i];
+                            this.initMap(this.selectedCity.Latitude, this.selectedCity.Longitude);
+                        }
+                    }
+                };
+                AppComponent.prototype.initMap = function (latitude, longitude) {
+                    if (latitude === undefined)
+                        latitude = -33.91741;
+                    if (longitude === undefined)
+                        longitude = 151.2313;
+                    var myLatLng = { lat: latitude, lng: longitude };
                     var map = new window.google.maps.Map(document.getElementById('map'), {
                         zoom: 4,
                         center: myLatLng
@@ -50,7 +66,8 @@ System.register(['angular2/core', './weather.service'], function(exports_1, cont
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
-                        template: "\n        <h1>Pick a city!</h1>\n        <select>\n            <option *ngFor=\"#city of cities\" [value]=\"city\">{{city.City}}<option>\n        </select>\n        <div id=\"map\"></div>\n    ",
+                        directives: [common_1.FORM_DIRECTIVES],
+                        template: "\n        <h1>Pick a city!</h1>\n        <form >\n        <select (change)=\"onSelect($event.target.value)\">\n            <option *ngFor=\"#city of cities\" [value]=\"city.City\">{{city.City}}<option>\n        </select>\n        </form>\n        <div id=\"map\"></div>\n    ",
                         providers: [weather_service_1.WeatherService]
                     }), 
                     __metadata('design:paramtypes', [weather_service_1.WeatherService])

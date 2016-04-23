@@ -1,7 +1,7 @@
 export interface ICity {
-    longitude: number,
-    latitude: number,
-    humidity: number,
-    temperature: number,
-    city: string
+    Longitude: number,
+    Latitude: number,
+    Humidity: number,
+    Temperature: number,
+    City: string
 }
