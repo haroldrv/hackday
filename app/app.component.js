@@ -33,11 +33,24 @@ System.register(['angular2/core', './weather.service'], function(exports_1, cont
                     this._weatherService
                         .getCities()
                         .subscribe(function (cities) { _this.cities = cities; }, function (error) { return console.log(error); });
+                    this.initMap();
+                };
+                AppComponent.prototype.initMap = function () {
+                    var myLatLng = { lat: -25.363, lng: 131.044 };
+                    var map = new window.google.maps.Map(document.getElementById('map'), {
+                        zoom: 4,
+                        center: myLatLng
+                    });
+                    var marker = new window.google.maps.Marker({
+                        position: myLatLng,
+                        map: map,
+                        title: 'Hello World!'
+                    });
                 };
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
-                        template: "\n        <h1>Pick a city!</h1>\n        <ul>\n            <li *ngFor=\"#city of cities\">\n                {{city.City}}\n            </li>\n        </ul>\n    ",
+                        template: "\n        <h1>Pick a city!</h1>\n        <select>\n            <option *ngFor=\"#city of cities\" [value]=\"city\">{{city.City}}<option>\n        </select>\n        <div id=\"map\"></div>\n    ",
                         providers: [weather_service_1.WeatherService]
                     }), 
                     __metadata('design:paramtypes', [weather_service_1.WeatherService])
