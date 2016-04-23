@@ -1,4 +1,4 @@
-System.register(['angular2/core'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/operator/map', 'rxjs/add/operator/catch'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,32 +10,60 @@ System.register(['angular2/core'], function(exports_1, context_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, http_1, Observable_1;
     var WeatherService;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
-            }],
+            },
+            function (http_1_1) {
+                http_1 = http_1_1;
+            },
+            function (Observable_1_1) {
+                Observable_1 = Observable_1_1;
+            },
+            function (_1) {},
+            function (_2) {}],
         execute: function() {
             WeatherService = (function () {
-                function WeatherService() {
+                function WeatherService(_http) {
+                    this._http = _http;
+                    this._apiUrl = 'http://hackdayapi.azurewebsites.net/api/weather';
                 }
-                WeatherService.prototype.get = function () {
-                    var mockedCities = [
-                        {
-                            longitude: 151.2313,
-                            latitude: 33.91741,
-                            humidity: 82,
-                            temperature: 18.62,
-                            city: 'Sydney'
-                        }
-                    ];
-                    return mockedCities;
+                // get() {
+                //     var mockedCities: ICity[] = [
+                //         {
+                //             longitude: 151.2313,
+                //             latitude: 33.91741,
+                //             humidity: 82,
+                //             temperature: 18.62,
+                //             city: 'Sydney'
+                //         }
+                //     ];
+                //     return mockedCities;
+                // }
+                WeatherService.prototype.getCities = function () {
+                    return this._http
+                        .get(this._apiUrl)
+                        .map(this.extractCities)
+                        .catch(this.handleError);
+                };
+                WeatherService.prototype.extractCities = function (response) {
+                    if (response.status < 200 || response.status >= 300) {
+                        throw new Error('Bad response status: ' + response.status);
+                    }
+                    var body = response.json();
+                    return body;
+                };
+                WeatherService.prototype.handleError = function (error) {
+                    var errMsg = error.message || 'Server error';
+                    console.error(errMsg); // log to console instead
+                    return Observable_1.Observable.throw(errMsg);
                 };
                 WeatherService = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [http_1.Http])
                 ], WeatherService);
                 return WeatherService;
             }());

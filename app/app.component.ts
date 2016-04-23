@@ -5,12 +5,10 @@ import { WeatherService } from './weather.service';
 @Component({
     selector: 'my-app',
     template: `
-        <h1>My First App</h1>
-        <br/>
-        <h2>Cities: </h2>
+        <h1>Pick a city!</h1>
         <ul>
             <li *ngFor="#city of cities">
-                {{city.city}}
+                {{city.City}}
             </li>
         </ul>
     `,
@@ -27,7 +25,11 @@ export class AppComponent implements OnInit {
     }
     
     getWeather(){
-        this.cities = this._weatherService.get();
-        console.log(this.cities);
+        this._weatherService
+            .getCities()
+            .subscribe(
+                cities => {this.cities = cities},
+                error => console.log(error)
+            );
     }
 }

@@ -29,13 +29,15 @@ System.register(['angular2/core', './weather.service'], function(exports_1, cont
                     this.getWeather();
                 };
                 AppComponent.prototype.getWeather = function () {
-                    this.cities = this._weatherService.get();
-                    console.log(this.cities);
+                    var _this = this;
+                    this._weatherService
+                        .getCities()
+                        .subscribe(function (cities) { _this.cities = cities; }, function (error) { return console.log(error); });
                 };
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
-                        template: "\n        <h1>My First App</h1>\n        <br/>\n        <h2>Cities: </h2>\n        <ul>\n            <li *ngFor=\"#city of cities\">\n                {{city.city}}\n            </li>\n        </ul>\n    ",
+                        template: "\n        <h1>Pick a city!</h1>\n        <ul>\n            <li *ngFor=\"#city of cities\">\n                {{city.City}}\n            </li>\n        </ul>\n    ",
                         providers: [weather_service_1.WeatherService]
                     }), 
                     __metadata('design:paramtypes', [weather_service_1.WeatherService])
