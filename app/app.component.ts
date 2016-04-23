@@ -8,11 +8,9 @@ import { WeatherService } from './weather.service';
     directives: [FORM_DIRECTIVES],
     template: `
         <h1>Pick a city!</h1>
-        <form >
         <select (change)="onSelect($event.target.value)">
             <option *ngFor="#city of cities" [value]="city.City">{{city.City}}<option>
         </select>
-        </form>
         <div id="map"></div>
     `,
     providers: [WeatherService]
@@ -35,8 +33,8 @@ export class AppComponent implements OnInit {
             cities => { this.cities = cities },
             error => console.log(error)
             );
-            
-            this.initMap();
+
+        this.initMap();
     }
 
     onSelect(selectedCity: string) {
@@ -50,9 +48,9 @@ export class AppComponent implements OnInit {
     }
 
     initMap(latitude?: number, longitude?: number) {
-        if(latitude === undefined)
+        if (latitude === undefined)
             latitude = -33.91741;
-        if(longitude === undefined)
+        if (longitude === undefined)
             longitude = 151.2313;
         var myLatLng = { lat: latitude, lng: longitude };
 

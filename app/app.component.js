@@ -67,7 +67,7 @@ System.register(['angular2/core', "angular2/common", './weather.service'], funct
                     core_1.Component({
                         selector: 'my-app',
                         directives: [common_1.FORM_DIRECTIVES],
-                        template: "\n        <h1>Pick a city!</h1>\n        <form >\n        <select (change)=\"onSelect($event.target.value)\">\n            <option *ngFor=\"#city of cities\" [value]=\"city.City\">{{city.City}}<option>\n        </select>\n        </form>\n        <div id=\"map\"></div>\n    ",
+                        template: "\n        <h1>Pick a city!</h1>\n        <select (change)=\"onSelect($event.target.value)\">\n            <option *ngFor=\"#city of cities\" [value]=\"city.City\">{{city.City}}<option>\n        </select>\n        <div id=\"map\"></div>\n    ",
                         providers: [weather_service_1.WeatherService]
                     }), 
                     __metadata('design:paramtypes', [weather_service_1.WeatherService])
